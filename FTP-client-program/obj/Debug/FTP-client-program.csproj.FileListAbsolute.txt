@@ -9,3 +9,14 @@ C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\КУРСОВА�
 C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\КУРСОВАЯ РАБОТА\FTP-client-program\obj\Debug\FTP-client-program.exe
 C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\КУРСОВАЯ РАБОТА\FTP-client-program\obj\Debug\FTP-client-program.pdb
 C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\КУРСОВАЯ РАБОТА\FTP-client-program\obj\Debug\FTP_client_program.Form1.resources
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\bin\Debug\FTP-client-program.exe.config
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\bin\Debug\FTP-client-program.exe
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\bin\Debug\FTP-client-program.pdb
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Debug\FTP-client-program.csproj.AssemblyReference.cache
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Debug\FTP-client-program.csproj.SuggestedBindingRedirects.cache
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Debug\FTP_client_program.Form1.resources
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Debug\FTP_client_program.Properties.Resources.resources
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Debug\FTP-client-program.csproj.GenerateResource.cache
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Debug\FTP-client-program.csproj.CoreCompileInputs.cache
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Debug\FTP-client-program.exe
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Debug\FTP-client-program.pdb

@@ -1,0 +1,11 @@
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\bin\Release\FTP-client-program.exe.config
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\bin\Release\FTP-client-program.exe
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\bin\Release\FTP-client-program.pdb
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP-client-program.csproj.AssemblyReference.cache
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP-client-program.csproj.SuggestedBindingRedirects.cache
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP_client_program.Form1.resources
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP_client_program.Properties.Resources.resources
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP-client-program.csproj.GenerateResource.cache
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP-client-program.csproj.CoreCompileInputs.cache
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP-client-program.exe
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP-client-program.pdb
