@@ -108,7 +108,6 @@
             this.ftpServer_textBox.Name = "ftpServer_textBox";
             this.ftpServer_textBox.Size = new System.Drawing.Size(140, 22);
             this.ftpServer_textBox.TabIndex = 18;
-            this.ftpServer_textBox.Text = "194.63.141.39";
             // 
             // username_textBox
             // 
@@ -116,7 +115,6 @@
             this.username_textBox.Name = "username_textBox";
             this.username_textBox.Size = new System.Drawing.Size(140, 22);
             this.username_textBox.TabIndex = 19;
-            this.username_textBox.Text = "user2739914";
             // 
             // password_textBox
             // 
@@ -124,7 +122,6 @@
             this.password_textBox.Name = "password_textBox";
             this.password_textBox.Size = new System.Drawing.Size(140, 22);
             this.password_textBox.TabIndex = 20;
-            this.password_textBox.Text = "b44yCUXbUTwd";
             this.password_textBox.UseSystemPasswordChar = true;
             // 
             // start_button

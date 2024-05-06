@@ -13,7 +13,6 @@ namespace FTP_client_program
 {
     public partial class Form1 : Form
     {
-
         // Создание пунктов меню для listView
         ToolStripMenuItem downloadFileItem = new ToolStripMenuItem("Скачать файл");
         ToolStripMenuItem deleteFileItem = new ToolStripMenuItem("Удалить файл");
@@ -160,8 +159,8 @@ namespace FTP_client_program
             {
                 string itemName = selectedItem.Text;
                 fullFolderPath = currentServerPathLabel.Text + "/" + itemName;
-                DeleteDirectory(fullFolderPath);
-            } 
+                DeleteEmptyFolder(fullFolderPath);
+            }
         }
 
         /// <summary>
@@ -384,7 +383,7 @@ namespace FTP_client_program
         /// <summary>
         /// Метод для удаления пустой директории на сервере.
         /// </summary>
-        private void DeleteDirectory(string directoryPath)
+        private void DeleteEmptyFolder(string directoryPath)
         {
             try
             {
