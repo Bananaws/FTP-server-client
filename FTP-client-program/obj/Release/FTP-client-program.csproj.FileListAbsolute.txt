@@ -9,3 +9,6 @@ C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-cli
 C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP-client-program.csproj.CoreCompileInputs.cache
 C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP-client-program.exe
 C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP-client-program.pdb
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\bin\Release\FluentFTP.dll
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\bin\Release\FluentFTP.xml
+C:\Users\Bananaws\Desktop\Учёба\3 курс\2 семестр\Project\FTP-client-program\obj\Release\FTP-client-program.csproj.CopyComplete

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace FTP_client_program
 {
@@ -88,7 +90,7 @@ namespace FTP_client_program
         /// <summary>
         /// Событие нажатия на кнопку "Скачать файл".
         /// </summary>
-        private void DownloadFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void DownloadFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
             string folderBrowserlocal = "";
@@ -100,9 +102,20 @@ namespace FTP_client_program
                 if (selectedItem != null)
                 {
                     string itemName = selectedItem.Text;
-                    fullFilePath = currentServerPathLabel.Text + "/" + itemName;
+                    fullFilePath = currentServerPathLabel.Text; // только путь до файла, не включая файл
                     string remoteFileName = itemName;
-                    DownloadFile(remoteFileName, fullFilePath, folderBrowserlocal);
+
+                    // Используйте Invoke для создания и добавления ProgressBar в главном потоке
+                    Invoke(new Action(() =>
+                    {
+                        ProgressBar progressBar = new ProgressBar();
+                        progressBar.Size = new Size(228, 32);
+                        progressBar.Location = new Point(770, 114);
+                        Controls.Add(progressBar);
+
+                        // Вызов метода скачивания файла в отдельном потоке
+                        Task.Run(async () => await DownloadFile(remoteFileName, fullFilePath, folderBrowserlocal, progressBar));
+                    }));
                 }
                 else MessageBox.Show("Путь к файлу недействителен");
             }
@@ -154,7 +167,7 @@ namespace FTP_client_program
         /// <summary>
         /// Событие нажатия на кнопку "Выбрать и загрузить файл на сервер".
         /// </summary>
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
             string localFilePath;
@@ -162,7 +175,19 @@ namespace FTP_client_program
             {
                 localFilePath = openFileDialog1.FileName;
                 string fileName = Path.GetFileName(localFilePath);
-                UploadFile(fileName, localFilePath, currentServerPathLabel.Text);
+
+                // Используйте Invoke для создания и добавления ProgressBar в главном потоке
+                Invoke(new Action(() =>
+                {
+                    // Создание и настройка ProgressBar для отображения прогресса загрузки или скачивания файла
+                    ProgressBar progressBar1 = new ProgressBar();
+                    progressBar1.Size = new Size(228, 32); // Задаем размер ProgressBar
+                    progressBar1.Location = new Point(770, 162); // Задаем координаты расположения
+                    Controls.Add(progressBar1); // Добавляем ProgressBar на форму
+
+                    // Вызов метода скачивания файла в отдельном потоке
+                    Task.Run(async () => await UploadFile(fileName, localFilePath, currentServerPathLabel.Text, progressBar1));
+                }));            
             }
             else MessageBox.Show("Выберите файл на локальном устройстве.");
         }
@@ -370,7 +395,6 @@ namespace FTP_client_program
                 using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
                 {
                     ListDirectoriesAndFiles(currentServerPathLabel.Text);
-                    MessageBox.Show($"Папка '{directoryPath}' успешно удалена");
                 }
             }
             catch
@@ -382,74 +406,129 @@ namespace FTP_client_program
         /// <summary>
         /// Метод для загрузки файла на сервер.
         /// </summary>
-        private void UploadFile(string fileName, string localFilePath, string remoteDirectoryPath)
+        private async Task UploadFile(string fileName, string localFilePath, string remoteDirectoryPath, ProgressBar progressBar1)
         {
-            // Создание запроса для загрузки файла на FTP-сервер
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpServer_textBox.Text}/{remoteDirectoryPath}/{fileName}");
-
-            // Установка учетных данных для доступа к FTP-серверу
-            request.Credentials = new NetworkCredential(username_textBox.Text, password_textBox.Text);
-
-            // Установка метода запроса как "UploadFile", что означает загрузку файла на сервер
-            request.Method = WebRequestMethods.Ftp.UploadFile;
-
-            // Открытие локального файла для чтения
-            using (Stream fileStream = File.OpenRead(localFilePath))
-            // Получение потока для записи на FTP-сервер
-            using (Stream ftpStream = request.GetRequestStream())
+            await Task.Run(async () =>
             {
-                byte[] buffer = new byte[10240]; // Создание буфера для чтения файла кусками
-                int read;
-                // Чтение файла и запись его содержимого в поток FTP-сервера
-                while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+                try
                 {
-                    ftpStream.Write(buffer, 0, read);
+                    FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpServer_textBox.Text}/{remoteDirectoryPath}/{fileName}");
+                    request.Credentials = new NetworkCredential(username_textBox.Text, password_textBox.Text);
+                    request.Method = WebRequestMethods.Ftp.UploadFile;
+
+                    using (Stream fileStream = File.OpenRead(localFilePath))
+                    using (Stream ftpStream = request.GetRequestStream())
+                    {
+                        byte[] buffer = new byte[10240];
+                        int read;
+                        long totalBytesRead = 0;
+                        long fileSize = fileStream.Length;
+                        while ((read = await fileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        {
+                            await ftpStream.WriteAsync(buffer, 0, read);
+                            totalBytesRead += read;
+                            int progressPercentage = (int)((totalBytesRead * 100) / fileSize);
+                            progressBar1.Value = progressPercentage;
+                        }
+                    }
+                    // Удалить ProgressBar из главного потока
+                    progressBar1.Invoke((MethodInvoker)delegate {
+                        Controls.Remove(progressBar1);
+                    });
+                    // Обновление списка файлов и папок на сервере после загрузки файла
+                    ListDirectoriesAndFiles(currentServerPathLabel.Text);
                 }
-            }
-
-            // Обновление списка файлов и папок на сервере после загрузки файла
-            ListDirectoriesAndFiles(currentServerPathLabel.Text);
-
-            // Вывод сообщения об успешной загрузке файла
-            MessageBox.Show($"Файл {fileName} успешно загружен с {localFilePath}.");
+                catch (WebException ex)
+                {
+                    // Удалить ProgressBar из главного потока
+                    progressBar1.Invoke((MethodInvoker)delegate {
+                        Controls.Remove(progressBar1);
+                    });
+                    this.Controls.Remove(progressBar1);
+                    MessageBox.Show($"Ошибка при скачивании файла: {ex.Message}");
+                }
+            }); 
         }
 
         /// <summary>
         /// Метод для скачивания файла с сервера.
         /// </summary>
-        private void DownloadFile(string fileName, string remoteFileDirName, string localDirectory)
+        private async Task DownloadFile(string fileName, string remoteFileDirName, string localDirectory, ProgressBar progressBar)
         {
-            // Формирование пути к локальному файлу
-            string localFilePath = Path.Combine(localDirectory, fileName);
-
-            // Создание запроса для загрузки файла с FTP-сервера
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpServer_textBox.Text}/{remoteFileDirName}");
-
-            // Установка учетных данных для доступа к FTP-серверу
-            request.Credentials = new NetworkCredential(username_textBox.Text, password_textBox.Text);
-
-            // Установка метода запроса как "DownloadFile", что означает загрузку файла с сервера
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-            // Получение потока ответа от FTP-сервера
-            using (Stream ftpStream = request.GetResponse().GetResponseStream())
-            // Создание локального файла для записи данных
-            using (Stream fileStream = File.Create(localFilePath))
+            await Task.Run(async () =>
             {
-                byte[] buffer = new byte[10240]; // Создание буфера для чтения данных
-                int read;
-                // Чтение данных из потока FTP-сервера и запись их в локальный файл
-                while ((read = ftpStream.Read(buffer, 0, buffer.Length)) > 0)
+                string localFilePath = Path.Combine(localDirectory, fileName);
+
+                // Создаем запрос для получения размера файла
+                FtpWebRequest sizeRequest = (FtpWebRequest)WebRequest.Create($"ftp://{ftpServer_textBox.Text}/{remoteFileDirName}/{fileName}");
+                sizeRequest.Credentials = new NetworkCredential(username_textBox.Text, password_textBox.Text);
+                sizeRequest.Method = WebRequestMethods.Ftp.GetFileSize;
+
+                long fileSize = 0;
+                try
                 {
-                    fileStream.Write(buffer, 0, read);
+                    using (FtpWebResponse sizeResponse = (FtpWebResponse)await sizeRequest.GetResponseAsync())
+                    {
+                        fileSize = sizeResponse.ContentLength;
+                    }
                 }
-            }
+                catch (WebException ex)
+                {
+                    MessageBox.Show($"Ошибка при получении размера файла: {ex.Message}");
+                    return;
+                }
 
-            // Обновление списка файлов и папок на сервере после загрузки файла
-            ListDirectoriesAndFiles(currentServerPathLabel.Text);
 
-            // Вывод сообщения об успешной загрузке файла
-            MessageBox.Show($"Файл '{fileName}' успешно загружен в '{remoteFileDirName}'.");
+                // Создаем запрос для загрузки файла
+                FtpWebRequest downloadRequest = (FtpWebRequest)WebRequest.Create($"ftp://{ftpServer_textBox.Text}/{remoteFileDirName}/{fileName}");
+                downloadRequest.Credentials = new NetworkCredential(username_textBox.Text, password_textBox.Text);
+                downloadRequest.Method = WebRequestMethods.Ftp.DownloadFile;
+
+                try
+                {
+                    using (FtpWebResponse response = (FtpWebResponse)await downloadRequest.GetResponseAsync())
+                    using (Stream ftpStream = response.GetResponseStream())
+                    using (FileStream fileStream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
+                    {
+                        byte[] buffer = new byte[10240];
+                        int bytesRead;
+                        long totalBytesRead = 0;
+
+                        while ((bytesRead = await ftpStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        {
+                            await fileStream.WriteAsync(buffer, 0, bytesRead);
+                            totalBytesRead += bytesRead;
+
+                            // Обновляем ProgressBar на основе количества загруженных байтов
+                            int progressPercentage = (int)((totalBytesRead * 100) / fileSize);
+                            progressBar.Value = progressPercentage;
+                        }
+                    }
+                    // Установить значение ProgressBar в контексте главного потока
+                    progressBar.Invoke((MethodInvoker)delegate {
+                        progressBar.Value = 0;
+                    });
+
+                    // Удалить ProgressBar из контейнера в контексте главного потока
+                    progressBar.Invoke((MethodInvoker)delegate {
+                        Controls.Remove(progressBar);
+                    });
+                }
+                catch (WebException ex)
+                {
+                    // Установить значение ProgressBar в контексте главного потока
+                    progressBar.Invoke((MethodInvoker)delegate {
+                        progressBar.Value = 0;
+                    });
+                    // Удалить ProgressBar из главного потока
+                    progressBar.Invoke((MethodInvoker)delegate {
+                        Controls.Remove(progressBar);
+                    });
+                    this.Controls.Remove(progressBar);
+                    MessageBox.Show($"Ошибка при загрузке файла: {ex.Message}");
+                }
+            });
+            
         }
 
         /// <summary>
@@ -471,7 +550,6 @@ namespace FTP_client_program
             // Отправляем запрос на удаление файла
             using (FtpWebResponse response = (FtpWebResponse)request.GetResponse()) { }
             ListDirectoriesAndFiles(currentServerPathLabel.Text);
-            MessageBox.Show($"Файл '{fileName}' успешно удалён с '{directoryPath}'.");
         }
 
         /// <summary>
@@ -483,11 +561,10 @@ namespace FTP_client_program
                 !string.IsNullOrEmpty(username_textBox.Text) &&
                 !string.IsNullOrEmpty(password_textBox.Text))
             {
-                currentServerPathLabel.Text = "";
-                ListDirectoriesAndFiles(currentServerPathLabel.Text);
-                buttonPreviousDirectory.Enabled = true;
-                button1.Enabled = true;
-                MessageBox.Show($"Вы успешно подключились к хосту {ftpServer_textBox.Text}");
+               currentServerPathLabel.Text = "";
+               ListDirectoriesAndFiles(currentServerPathLabel.Text);
+               buttonPreviousDirectory.Enabled = true;
+               button1.Enabled = true;
             }
             else
             {

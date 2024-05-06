@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -43,15 +44,19 @@
             this.buttonPreviousDirectory = new System.Windows.Forms.Button();
             this.currentServerPathLabel = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.Cyan;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(1048, 140);
+            this.button1.Location = new System.Drawing.Point(975, 329);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(259, 67);
+            this.button1.Size = new System.Drawing.Size(260, 67);
             this.button1.TabIndex = 0;
             this.button1.Text = "Выбрать и загрузить файл на сервер";
             this.button1.UseVisualStyleBackColor = false;
@@ -103,6 +108,7 @@
             this.ftpServer_textBox.Name = "ftpServer_textBox";
             this.ftpServer_textBox.Size = new System.Drawing.Size(140, 22);
             this.ftpServer_textBox.TabIndex = 18;
+            this.ftpServer_textBox.Text = "194.63.141.39";
             // 
             // username_textBox
             // 
@@ -110,6 +116,7 @@
             this.username_textBox.Name = "username_textBox";
             this.username_textBox.Size = new System.Drawing.Size(140, 22);
             this.username_textBox.TabIndex = 19;
+            this.username_textBox.Text = "user2739914";
             // 
             // password_textBox
             // 
@@ -117,6 +124,7 @@
             this.password_textBox.Name = "password_textBox";
             this.password_textBox.Size = new System.Drawing.Size(140, 22);
             this.password_textBox.TabIndex = 20;
+            this.password_textBox.Text = "b44yCUXbUTwd";
             this.password_textBox.UseSystemPasswordChar = true;
             // 
             // start_button
@@ -194,12 +202,34 @@
             this.label5.TabIndex = 32;
             this.label5.Text = "21";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(975, 140);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 33;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(975, 199);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.TabIndex = 34;
+            this.pictureBox2.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Silver;
+            this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(1387, 639);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.currentServerPathLabel);
             this.Controls.Add(this.buttonPreviousDirectory);
@@ -220,6 +250,8 @@
             this.ShowIcon = false;
             this.Text = "Обмен файлами с FTP-сервером";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -242,6 +274,8 @@
         private System.Windows.Forms.Button buttonPreviousDirectory;
         private System.Windows.Forms.Label currentServerPathLabel;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 
